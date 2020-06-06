@@ -1,0 +1,56 @@
+task readVersionName {
+    def versionMajor
+    def versionMinor
+
+    def versionBuild
+    def versionFileName = "version.properties";
+    def versionPropsFile
+
+    versionPropsFile = file(versionFileName)
+
+    if (versionPropsFile != null && versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+        versionMajor = versionProps.getProperty('VERSION_MAJOR', '0').toInteger()
+        versionMinor = versionProps.getProperty('VERSION_MINOR', '0').toInteger()
+
+        versionBuild = versionProps.getProperty('VERSION_BUILD', '1').toInteger()
+        project.ext.versionCode = versionMajor * 1000 + versionMinor * 100 + versionBuild
+        project.ext.versionName = "${versionMajor}.${versionMinor}.${versionBuild}"
+        println '--------Building----------'
+        println 'PropsFile: ' + versionPropsFile.toString()
+        println 'versionMajor ' + versionMajor.toString()
+        println 'versionMinor ' + versionMinor.toString()
+        println 'Version Code: ' + project.ext.versionCode.toString()
+        println 'Version Name: ' + project.ext.versionName
+        println '---------------------------'
+    } else {
+        throw new GradleException("Could not read version.properties!")
+    }
+
+    def runTasks = gradle.startParameter.taskNames
+    println runTasks
+    //发布库到bintray仓库
+    if ('bintrayUpload' in runTasks) {
+        if (versionPropsFile != null && versionPropsFile.canRead()) {
+            def Properties versionProps = new Properties()
+            versionProps.load(new FileInputStream(versionPropsFile))
+            versionBuild = versionBuild + 1
+            project.ext.versionCode =
+                    versionMajor * 1000 + versionMinor * 100 + versionBuild
+            project.ext.versionName = "${versionMajor}.${versionMinor}.${versionBuild}"
+            versionProps.setProperty('VERSION_MAJOR', versionMajor.toString())
+            versionProps.setProperty('VERSION_MINOR', versionMinor.toString())
+            versionProps.setProperty('VERSION_BUILD', versionBuild.toString())
+            versionProps.setProperty('VERSION_CODE', project.ext.versionCode.toString())
+            versionProps.setProperty('VERSION_NAME', project.ext.versionName)
+            versionProps.store(versionPropsFile.newWriter(), null)
+            println '--------Building----------'
+            println 'Version Code: ' + project.ext.versionCode.toString()
+            println 'Version Name: ' + project.ext.versionName
+            println '---------------------------'
+        } else {
+            throw new GradleException("Could not read version.properties!")
+        }
+    }
+}

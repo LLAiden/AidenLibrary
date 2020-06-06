@@ -1,0 +1,35 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "com.aiden.library"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation rootProject.ext.dependencies[ "appcompat"]
+    implementation rootProject.ext.dependencies[ "constraintlayout"]
+    implementation rootProject.ext.dependencies[ "rxjava"]
+    implementation rootProject.ext.dependencies[ "rxandroid"]
+    implementation rootProject.ext.dependencies[ "retrofit2"]
+    implementation rootProject.ext.dependencies[ "retrofit2-converter-gson"]
+    implementation rootProject.ext.dependencies[ "retrofit2-rxjava2-adapter"]
+    implementation rootProject.ext.dependencies[ "okhttp3"]
+    implementation rootProject.ext.dependencies[ "okhttp3-logging_interceptor"]
+}
