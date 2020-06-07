@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
 
 android {
     compileSdkVersion 29
@@ -32,4 +35,9 @@ dependencies {
     implementation rootProject.ext.dependencies[ "retrofit2-rxjava2-adapter"]
     implementation rootProject.ext.dependencies[ "okhttp3"]
     implementation rootProject.ext.dependencies[ "okhttp3-logging_interceptor"]
+    implementation rootProject.ext.dependencies[ "recyclerview"]
+    implementation rootProject.ext.dependencies[ "multidex"]
+    implementation project(path: ':AidenLibrary')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }
