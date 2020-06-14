@@ -4,20 +4,39 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.aiden.aidenlibrary.adapter.listener.OnItemClickListener
 import com.aiden.aidenlibrary.adapter.listener.OnItemLongClickListener
 import com.aiden.aidenlibrary.adapter.viewholder.ViewHolder
+import kotlin.properties.Delegates
 
-abstract class CommonAdapter<T>(private val context: Context, @param:LayoutRes private val layoutId: Int, private val dataList: List<T>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+abstract class CommonAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private var type: MultipleType? = null
+    private var dataList = mutableListOf<T>()
+    private var context: Context
+    private var layoutId by Delegates.notNull<Int>()
+
+    private val TAG = "CommonAdapter"
+
+    constructor(context: Context, layoutId: Int, type: MultipleType) {
+        this.context = context
+        this.layoutId = layoutId
+        this.type = type
+    }
+
+
+    constructor(context: Context, layoutId: Int, dataList: List<T>) {
+        this.context = context
+        this.layoutId = layoutId
+        this.dataList.addAll(dataList)
+    }
 
     private var itemClickListener: OnItemClickListener? = null
     private var itemLongClickListener: OnItemLongClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = View.inflate(context, layoutId, null)
-        Log.e("CommonAdapter", "Create Vie wHolder...")
         return ViewHolder(itemView)
     }
 
@@ -34,6 +53,7 @@ abstract class CommonAdapter<T>(private val context: Context, @param:LayoutRes p
     }
 
     abstract fun convert(holder: ViewHolder, t: T)
+    fun getType() = type
 
     fun setOnItemClickListener(itemClickListener: OnItemClickListener): CommonAdapter<T> {
         this.itemClickListener = itemClickListener
