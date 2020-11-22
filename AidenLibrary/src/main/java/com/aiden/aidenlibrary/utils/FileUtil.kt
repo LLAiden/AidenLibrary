@@ -131,11 +131,7 @@ object FileUtil {
         return stringBuffer.toString()
     }
 
-    fun write2File(
-        targetPath: String,
-        content: String,
-        isAppend: Boolean = false
-    ) {
+    fun write2File(targetPath: String, content: String, isAppend: Boolean = false) {
         val file = File(targetPath)
         if (!file.exists()) {
             if (createFile(file.absolutePath)) {
