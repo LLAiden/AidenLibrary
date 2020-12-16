@@ -10,7 +10,7 @@ import com.aiden.aidenlibrary.utils.GraphUtil
 class RoundImageView @JvmOverloads constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : AppCompatImageView(context, attrs, defStyleAttr) {
 
     private var paint: Paint = Paint()
-    private var mRadius = 50F
+    private var mRadius = 40F
     private var srcRectF: RectF
     private val porterDuffXfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT)
     private val srcPath: Path
